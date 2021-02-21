@@ -1,0 +1,29 @@
+{
+  "eslint.validate": [
+    //eslint检查的语言
+    "javascript",
+    "html",
+    "vue"
+  ],
+  "editor.formatOnSave": true, //保存时自动格式化
+  "editor.codeActionsOnSave": {
+    //保存时eslint自动修复
+    "source.fixAll.eslint": true
+  },
+  //需要安装prettier
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.parser": "flow", //prettier格式化不能用时加
+  "prettier.singleQuote": true, //强制添加单引号
+  "prettier.semi": false, //末尾没有分号
+  "prettier.arrowParens": "avoid", //  (x) => {} 箭头函数参数只有一个时是否要有小括号。avoid：省略括号
+  "prettier.bracketSpacing": true, // 在对象，数组括号与文字之间加空格 "{ foo: bar }"
+  "prettier.jsxBracketSameLine": false, // 在jsx中把'>' 单独放一行
+  "prettier.trailingComma": "none",
+  "prettier.disableLanguages": ["vue"] // 不格式化vue文件
+}
