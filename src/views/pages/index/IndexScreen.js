@@ -1,5 +1,5 @@
 //定义一个首页堆栈导航
-import React from 'react'
+import React, { useState } from 'react'
 //导入基础组件
 import { View, Text, StatusBar, ScrollView } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
@@ -9,14 +9,22 @@ import ScrollableTabView, {
 import { theme, ThemeColor } from '../../../styles/theme'
 
 //定义一个首页
-export default IndexScreen = ({ navigation, route }) => {
+export default IndexScreen = ({ navigation, route, props }) => {
+  const [scrollEnabled, setScrollEnabled] = useState(true)
   return (
     <SafeAreaView
       style={{
         flex: 1
       }}
     >
-      <View style={{ flex: 1, backgroundColor: '#f60' }}>
+      <ScrollView
+        style={{ flex: 1, backgroundColor: '#f60' }}
+        scrollEnabled={scrollEnabled}
+        stickyHeaderIndices={[2]} //吸顶效果
+        onScroll={e => {
+          console.log(e.nativeEvent.contentOffset.y) //大于tab栏高度+状态栏高度
+        }}
+      >
         <StatusBar
           backgroundColor="transparent"
           barStyle="light-content"
@@ -24,10 +32,11 @@ export default IndexScreen = ({ navigation, route }) => {
           hidden={false}
           translucent={true}
         />
-        <View style={{ width: '100%', height: 150 }}></View>
+        <View style={{ height: 100, backgroundColor: 'green' }}></View>
         <ScrollableTabView
           style={{
-            backgroundColor: ThemeColor.white
+            backgroundColor: ThemeColor.white,
+            height: 1000
           }}
           initialPage={0} //初始化第一个tab
           renderTabBar={() => <ScrollableTabBar />}
@@ -48,15 +57,24 @@ export default IndexScreen = ({ navigation, route }) => {
           <ScrollView
             tabLabel="推荐"
             style={{
-              flex: 1
+              backgroundColor: 'yellow'
             }}
+            scrollEnabled={!scrollEnabled}
           >
-            <Text>推荐列表</Text>
+            <Text style={{ height: 500 }}>推荐列表1</Text>
+            <Text style={{ height: 500 }}>推荐列表2</Text>
+            <Text style={{ height: 500 }}>推荐列表3</Text>
+            <Text>推荐列表4</Text>
+            <Text
+              style={{ width: '100%', height: 100, backgroundColor: 'red' }}
+            >
+              xxx
+            </Text>
           </ScrollView>
           <ScrollView
             tabLabel="最新"
             style={{
-              flex: 1
+              backgroundColor: 'red'
             }}
           >
             <Text>最新列表</Text>
@@ -70,7 +88,7 @@ export default IndexScreen = ({ navigation, route }) => {
             <Text>热门列表</Text>
           </ScrollView>
         </ScrollableTabView>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
