@@ -16,6 +16,8 @@ import { CollapsibleHeaderTabView } from 'react-native-scrollable-tab-view-colla
 const HScrollView = HPageViewHoc(ScrollView)
 //导入UI组件
 import { Image } from 'react-native-elements'
+//导入自定义组件
+import AutoHeightImage from '../../components/AutoHeightImage'
 //导入主题
 import { theme, ThemeColor } from '../../../styles/theme'
 
@@ -23,6 +25,7 @@ const SCREEN_WIDTH = Dimensions.SCREEN_WIDTH
 //定义一个首页
 export default IndexScreen = ({ navigation, route, props }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [showActivityIndicator, setShowActivityIndicator] = useState(false)
   return (
     <SafeAreaView
       style={{
@@ -43,7 +46,7 @@ export default IndexScreen = ({ navigation, route, props }) => {
             <Image
               style={{
                 width: SCREEN_WIDTH,
-                height: 150 //自动高度组件 写一下 https://www.jianshu.com/p/634b60de3460  https://reactnativeelements.com/docs/image 这个有一个imagecomponet属性
+                height: 150 //必须要指定高度 如果用自动高度组件会导致 tabbar的吸顶效果失效
               }}
               source={{
                 uri: 'http://www.ay1.cc/img?w=720&h=150&c=f60f60'
@@ -61,7 +64,9 @@ export default IndexScreen = ({ navigation, route, props }) => {
         initialPage={0} //初始化第一个tab
         tabBarPosition="top" //顶部
         locked={false} //锁定拖动 默认否
-        tabBarUnderlineStyle={{ backgroundColor: ThemeColor.primary }} //下划线颜色
+        tabBarUnderlineStyle={{
+          backgroundColor: ThemeColor.primary
+        }} //下划线颜色
         tabBarActiveTextColor={ThemeColor.primary}
         tabBarInactiveTextColor={ThemeColor.h2}
         tabBarTextStyle={{ fontSize: 16 }}
@@ -92,14 +97,35 @@ export default IndexScreen = ({ navigation, route, props }) => {
           //标签页下拉刷新
           isRefreshing={isRefreshing}
           onStartRefresh={() => {
+            // console.log('开始刷新')
             setIsRefreshing(true)
-            console.log('开始刷新')
+            setShowActivityIndicator(true)
             setTimeout(() => {
-              console.log('刷新结束')
+              // console.log('刷新结束')
               setIsRefreshing(false)
-            }, 2000)
+              setShowActivityIndicator(false)
+            }, 1500)
           }}
         >
+          {showActivityIndicator && (
+            <View
+              style={{
+                position: 'relative',
+                justifyContent: 'center'
+              }}
+            >
+              <ActivityIndicator
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0
+                }}
+                size="large"
+                color={ThemeColor.primary}
+              />
+            </View>
+          )}
           <Text style={{ height: 500 }}>推荐列表1</Text>
           <Text style={{ height: 500 }}>推荐列表2</Text>
           <Text style={{ height: 500 }}>推荐列表3</Text>
@@ -119,25 +145,7 @@ export default IndexScreen = ({ navigation, route, props }) => {
         </HScrollView>
         <HScrollView
           index={2}
-          tabLabel="热门1"
-          style={{
-            backgroundColor: 'blue'
-          }}
-        >
-          <Text>热门列表</Text>
-        </HScrollView>
-        <HScrollView
-          index={3}
-          tabLabel="热门2"
-          style={{
-            backgroundColor: 'blue'
-          }}
-        >
-          <Text>热门列表</Text>
-        </HScrollView>
-        <HScrollView
-          index={4}
-          tabLabel="热门3"
+          tabLabel="热门"
           style={{
             backgroundColor: 'blue'
           }}
