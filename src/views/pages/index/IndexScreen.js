@@ -1,17 +1,28 @@
 //定义一个首页堆栈导航
 import React, { useState } from 'react'
 //导入基础组件
-import { View, Text, StatusBar, ScrollView } from 'react-native'
+import {
+  View,
+  Text,
+  StatusBar,
+  ScrollView,
+  ActivityIndicator,
+  Dimensions
+} from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
 //导入吸顶导航嵌套滚动
 import { HPageViewHoc } from 'react-native-head-tab-view'
 import { CollapsibleHeaderTabView } from 'react-native-scrollable-tab-view-collapsible-header'
 const HScrollView = HPageViewHoc(ScrollView)
+//导入UI组件
+import { Image } from 'react-native-elements'
 //导入主题
 import { theme, ThemeColor } from '../../../styles/theme'
 
+const SCREEN_WIDTH = Dimensions.SCREEN_WIDTH
 //定义一个首页
 export default IndexScreen = ({ navigation, route, props }) => {
+  const [isRefreshing, setIsRefreshing] = useState(false)
   return (
     <SafeAreaView
       style={{
@@ -29,7 +40,19 @@ export default IndexScreen = ({ navigation, route, props }) => {
               hidden={false}
               translucent={true}
             />
-            <View style={{ height: 150, backgroundColor: 'red' }} />
+            <Image
+              style={{
+                width: SCREEN_WIDTH,
+                height: 150 //自动高度组件 写一下 https://www.jianshu.com/p/634b60de3460  https://reactnativeelements.com/docs/image 这个有一个imagecomponet属性
+              }}
+              source={{
+                uri: 'http://www.ay1.cc/img?w=720&h=150&c=f60f60'
+              }}
+              PlaceholderContent={
+                <ActivityIndicator size="large" color={ThemeColor.white} />
+              }
+              resizeMode="cover"
+            />
           </View>
         )}
         style={{
@@ -47,6 +70,16 @@ export default IndexScreen = ({ navigation, route, props }) => {
         }}
         onChangeTab={(key, ref) => {
           // console.log(key)//在这里处理点击显示哪个tab key 就是tabitem的key
+        }}
+        //整个页面下拉刷新
+        isRefreshing={isRefreshing}
+        onStartRefresh={() => {
+          setIsRefreshing(true)
+          console.log('开始刷新')
+          setTimeout(() => {
+            console.log('刷新结束')
+            setIsRefreshing(false)
+          }, 2000)
         }}
       >
         {/* 选项卡标签 */}
