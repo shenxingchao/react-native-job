@@ -72,15 +72,15 @@ export default IndexScreen = ({ navigation, route, props }) => {
           // console.log(key)//在这里处理点击显示哪个tab key 就是tabitem的key
         }}
         //整个页面下拉刷新
-        isRefreshing={isRefreshing}
-        onStartRefresh={() => {
-          setIsRefreshing(true)
-          console.log('开始刷新')
-          setTimeout(() => {
-            console.log('刷新结束')
-            setIsRefreshing(false)
-          }, 2000)
-        }}
+        // isRefreshing={isRefreshing}
+        // onStartRefresh={() => {
+        //   setIsRefreshing(true)
+        //   console.log('开始刷新')
+        //   setTimeout(() => {
+        //     console.log('刷新结束')
+        //     setIsRefreshing(false)
+        //   }, 2000)
+        // }}
       >
         {/* 选项卡标签 */}
         <HScrollView
@@ -88,6 +88,16 @@ export default IndexScreen = ({ navigation, route, props }) => {
           tabLabel="推荐"
           style={{
             backgroundColor: 'yellow'
+          }}
+          //标签页下拉刷新
+          isRefreshing={isRefreshing}
+          onStartRefresh={() => {
+            setIsRefreshing(true)
+            console.log('开始刷新')
+            setTimeout(() => {
+              console.log('刷新结束')
+              setIsRefreshing(false)
+            }, 2000)
           }}
         >
           <Text style={{ height: 500 }}>推荐列表1</Text>
@@ -109,7 +119,25 @@ export default IndexScreen = ({ navigation, route, props }) => {
         </HScrollView>
         <HScrollView
           index={2}
-          tabLabel="热门"
+          tabLabel="热门1"
+          style={{
+            backgroundColor: 'blue'
+          }}
+        >
+          <Text>热门列表</Text>
+        </HScrollView>
+        <HScrollView
+          index={3}
+          tabLabel="热门2"
+          style={{
+            backgroundColor: 'blue'
+          }}
+        >
+          <Text>热门列表</Text>
+        </HScrollView>
+        <HScrollView
+          index={4}
+          tabLabel="热门3"
           style={{
             backgroundColor: 'blue'
           }}
