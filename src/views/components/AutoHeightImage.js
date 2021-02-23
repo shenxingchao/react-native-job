@@ -12,7 +12,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 //导出宽度撑满高度自动图片组件
 export default AutoHeightImage = props => {
   const [autoHeight, setAutoHeight] = useState(0)
-  const { source, style } = props
+  const { source, style, resizeMode } = props
 
   if (source.uri) {
     //如果是远程图片，则获取
@@ -31,16 +31,17 @@ export default AutoHeightImage = props => {
   return (
     <Image
       style={[
-        { ...style },
         {
           width: SCREEN_WIDTH,
           height: autoHeight //自动高度组件参考 https://www.jianshu.com/p/634b60de3460
-        }
+        },
+        { ...style } //后面的覆盖前面的样式
       ]}
       PlaceholderContent={
         <ActivityIndicator size="large" color={ThemeColor.white} />
       }
       source={source}
+      resizeMode={resizeMode}
     />
   )
 }
@@ -48,6 +49,8 @@ export default AutoHeightImage = props => {
 // 使用
 {
   /* <AutoHeightImage
-source={{ uri: 'http://www.ay1.cc/img?w=720&h=150&c=f60f60' }}
+  style={{ height: 120 }}
+  source={{ uri: 'http://www.ay1.cc/img?w=720&h=180&c=f60f60' }}
+  resizeMode="contain"//先设contain 再设cover
 /> */
 }

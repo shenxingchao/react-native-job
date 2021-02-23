@@ -33,7 +33,7 @@ export default IndexScreen = ({ navigation, route, props }) => {
       }}
     >
       <CollapsibleHeaderTabView
-        makeHeaderHeight={() => 150}
+        makeHeaderHeight={() => 120}
         renderScrollHeader={() => (
           <View>
             <StatusBar
@@ -43,18 +43,10 @@ export default IndexScreen = ({ navigation, route, props }) => {
               hidden={false}
               translucent={true}
             />
-            <Image
-              style={{
-                width: SCREEN_WIDTH,
-                height: 150 //必须要指定高度 如果用自动高度组件会导致 tabbar的吸顶效果失效
-              }}
-              source={{
-                uri: 'http://www.ay1.cc/img?w=720&h=150&c=f60f60'
-              }}
-              PlaceholderContent={
-                <ActivityIndicator size="large" color={ThemeColor.white} />
-              }
-              resizeMode="cover"
+            <AutoHeightImage
+              style={{ height: 120 }} //必须设高度 不然吸顶会失效
+              source={{ uri: 'http://www.ay1.cc/img?w=720&h=180&c=f60f60' }}
+              resizeMode="cover" //先设contain 再设cover 保证高度和图片差不多都能正好显示
             />
           </View>
         )}
