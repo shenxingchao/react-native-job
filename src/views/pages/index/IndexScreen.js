@@ -45,7 +45,10 @@ export default IndexScreen = ({ navigation, route, props }) => {
             />
             <AutoHeightImage
               style={{ height: 120 }} //必须设高度 不然吸顶会失效
-              source={{ uri: 'http://www.ay1.cc/img?w=720&h=180&c=f60f60' }}
+              source={{
+                uri:
+                  'https://placeholder.idcd.com/?w=720&h=180&text=600x300&bgcolor=f60f60&fontcolor=ffffff&fontsize=60'
+              }}
               resizeMode="cover" //先设contain 再设cover 保证高度和图片差不多都能正好显示
             />
           </View>
