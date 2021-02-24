@@ -57,6 +57,7 @@ export default IndexScreen = ({ navigation, route, props }) => {
           backgroundColor: ThemeColor.white
         }}
         initialPage={0} //初始化第一个tab
+        tabbarHeight={120} //初始选项卡的高度，如果设置了这个，性能可以得到改善
         tabBarPosition="top" //顶部
         locked={false} //锁定拖动 默认否
         tabBarUnderlineStyle={{
