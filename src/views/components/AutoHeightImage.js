@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 //导入img组件  from https://reactnativeelements.com/docs/image
 import { Image } from 'react-native-elements'
 //导入rn组件API
-import { ActivityIndicator, Dimensions } from 'react-native'
+import { View, Text, ActivityIndicator, Dimensions } from 'react-native'
 //导入主题
 import { ThemeColor } from '../../styles/theme'
 
@@ -14,6 +14,12 @@ export default AutoHeightImage = props => {
   const [autoHeight, setAutoHeight] = useState(0)
   const { source, style, resizeMode } = props
 
+  if (source.uri == '')
+    return (
+      <View {...style}>
+        <Text>图片不存在</Text>
+      </View>
+    )
   if (source.uri) {
     //如果是远程图片，则获取
     Image.getSize(source.uri, (width, height) => {

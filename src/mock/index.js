@@ -30,17 +30,14 @@
 
 const Mock = require('mockjs')
 
-//获取用户信息
-let getUserInfo = Mock.mock({
+//获取首页顶部banner图
+let getIndexBanner = Mock.mock({
   message: 'success',
   code: 20000,
   data: {
-    username: '@cword(5)',
-    avatar:
-      'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    roles: [1, 2, 3] //模拟返回角色id 1，2，3
+    url: '@Image("720x180","#f60f60", "#ffffff","720x180")'
   }
 })
-Mock.mock(/UserCenter\/getInfo/, 'get', () => {
-  return getUserInfo
+Mock.mock(/Index\/getIndexBanner/, 'get', () => {
+  return getIndexBanner
 })
