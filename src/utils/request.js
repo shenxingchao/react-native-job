@@ -16,10 +16,10 @@ const service = axios.create({
 
 // request interceptor
 service.interceptors.request.use(
-  config => {
+  async config => {
     // do something before request is sent
     try {
-      const token = AsyncStorage.getItem('token')
+      const token = await AsyncStorage.getItem('token')
       if (token !== null) {
         config.headers.common['X-Token'] = token
       }
@@ -40,7 +40,7 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     if (res.code !== 20000) {
-      ToastAndroid.show(res.message || 'Error', 5 * 1000)
+      // ToastAndroid.show(res.message || 'Error', 5 * 1000)
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
       // console.log(res)
@@ -49,7 +49,7 @@ service.interceptors.response.use(
   },
   error => {
     // console.log('err' + error) // for debug
-    ToastAndroid.show(error.message, 5 * 1000)
+    // ToastAndroid.show(error.message, 5 * 1000)
     return Promise.reject(error)
   }
 )

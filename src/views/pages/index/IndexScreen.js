@@ -1,6 +1,5 @@
 //定义一个首页堆栈导航
 import React, { useState, useEffect } from 'react'
-
 //导入基础组件
 import {
   View,
@@ -12,7 +11,7 @@ import {
 import SafeAreaView from 'react-native-safe-area-view'
 //导入吸顶导航嵌套滚动
 import { HPageViewHoc } from 'react-native-head-tab-view'
-import { CollapsibleHeaderTabView } from 'react-native-scrollable-tab-view-collapsible-header'
+import { CollapsibleHeaderTabView } from 'react-native-scrollable-tab-view-collapsible-header' //修改SlideTabView import  createHeaderTabsComponent  from './createHeaderTabsComponent'
 const HScrollView = HPageViewHoc(ScrollView)
 //导入UI组件
 import {} from 'react-native-elements'
@@ -36,7 +35,7 @@ export default IndexScreen = ({ navigation, route, props }) => {
       params: {}
     })
       .then(res => {
-        // console.log(res)
+        console.log(res)
       })
       .catch(() => {})
   })
