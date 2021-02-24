@@ -1,13 +1,13 @@
 //定义一个首页堆栈导航
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
 //导入基础组件
 import {
   View,
   Text,
   StatusBar,
   ScrollView,
-  ActivityIndicator,
-  Dimensions
+  ActivityIndicator
 } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
 //导入吸顶导航嵌套滚动
@@ -15,17 +15,32 @@ import { HPageViewHoc } from 'react-native-head-tab-view'
 import { CollapsibleHeaderTabView } from 'react-native-scrollable-tab-view-collapsible-header'
 const HScrollView = HPageViewHoc(ScrollView)
 //导入UI组件
-import { Image } from 'react-native-elements'
+import {} from 'react-native-elements'
 //导入自定义组件
 import AutoHeightImage from '../../components/AutoHeightImage'
 //导入主题
 import { theme, ThemeColor } from '../../../styles/theme'
+//导入请求
+import request from '../../../utils/request'
 
-const SCREEN_WIDTH = Dimensions.SCREEN_WIDTH
 //定义一个首页
 export default IndexScreen = ({ navigation, route, props }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [showActivityIndicator, setShowActivityIndicator] = useState(false)
+
+  useEffect(() => {
+    //相当于 componentDidMount 和 componentDidUpdate 可以使用多次 并且可以订阅 #https://zh-hans.reactjs.org/docs/hooks-overview.html
+    request({
+      url: '/UserCenter/getInfo',
+      method: 'get',
+      params: {}
+    })
+      .then(res => {
+        // console.log(res)
+      })
+      .catch(() => {})
+  })
+
   return (
     <SafeAreaView
       style={{
