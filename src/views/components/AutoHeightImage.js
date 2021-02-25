@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 //导入img组件  from https://reactnativeelements.com/docs/image
 import { Image } from 'react-native-elements'
 //导入rn组件API
@@ -14,25 +14,27 @@ export default AutoHeightImage = props => {
   const [autoHeight, setAutoHeight] = useState(0)
   const { source, style, resizeMode } = props
 
-  if (source.uri == '')
-    return (
-      <View {...style}>
-        <Text>图片不存在</Text>
-      </View>
-    )
-  if (source.uri) {
-    //如果是远程图片，则获取
-    Image.getSize(source.uri, (width, height) => {
+  useEffect(() => {
+    if (source.uri) {
+      if (source.uri == '')
+        return (
+          <View {...style}>
+            <Text>图片不存在</Text>
+          </View>
+        )
+      //如果是远程图片，则获取
+      Image.getSize(source.uri, (width, height) => {
+        let h = Math.floor((SCREEN_WIDTH / width) * height)
+        setAutoHeight(h)
+      })
+    } else {
+      const result = Image.resolveAssetSource(props.source)
+      let height = result.height
+      let width = result.width
       let h = Math.floor((SCREEN_WIDTH / width) * height)
       setAutoHeight(h)
-    })
-  } else {
-    const result = Image.resolveAssetSource(this.props.source)
-    let height = result.height
-    let width = result.width
-    let h = Math.floor((SCREEN_WIDTH / width) * height)
-    setAutoHeight(h)
-  }
+    }
+  }, [])
 
   return (
     <Image

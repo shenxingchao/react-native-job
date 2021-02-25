@@ -22,28 +22,24 @@ import { theme, ThemeColor } from '../../../styles/theme'
 //导入API请求
 import { getIndexBanner } from '../../../api/index/index'
 //导入图片
-import img from '../../../assets/image'
 
 //定义一个首页
 export default IndexScreen = ({ navigation, route, props }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [showActivityIndicator, setShowActivityIndicator] = useState(false)
-
   //定义页面属性
-  const [banner, setBanner] = useState('')
-
-  const getInfo = () => {
-    //获取首页顶部banner图
-    getIndexBanner({})
-      .then(res => {
-        let { url } = res.data
-        setBanner(url)
-      })
-      .catch(() => {})
-  }
-
+  const [data, setData] = useState({ banner: null })
   //相当于 componentDidMount
   useEffect(() => {
+    const getInfo = async () => {
+      //获取首页顶部banner图
+      try {
+        const res = await getIndexBanner({}) // 复制json值console.log(JSON.stringify(res))
+
+        //下面就可以批量设置了
+        setData({ banner: res.data.url })
+      } catch (err) {}
+    }
     getInfo()
   }, [])
   //componentDidUpdate 可以使用多次 并且可以订阅 #https://zh-hans.reactjs.org/docs/hooks-overview.html
@@ -68,13 +64,7 @@ export default IndexScreen = ({ navigation, route, props }) => {
             />
             <AutoHeightImage
               style={{ height: 120 }} //必须设高度 不然吸顶会失效
-              source={
-                banner
-                  ? {
-                      uri: banner
-                    }
-                  : img.default_img
-              }
+              source={{ uri: data.banner }}
               resizeMode="cover" //先设contain 再设cover 保证高度和图片差不多都能正好显示
             />
           </View>
