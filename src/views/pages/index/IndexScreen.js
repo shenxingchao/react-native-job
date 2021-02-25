@@ -1,5 +1,7 @@
 //定义一个首页堆栈导航
 import React, { useState, useEffect } from 'react'
+//导入启动页隐藏
+import SplashScreen from 'react-native-splash-screen'
 //导入基础组件
 import {
   View,
@@ -41,6 +43,7 @@ export default IndexScreen = ({ navigation, route, props }) => {
       } catch (err) {}
     }
     getInfo()
+    SplashScreen.hide()
   }, [])
   //componentDidUpdate 可以使用多次 并且可以订阅 #https://zh-hans.reactjs.org/docs/hooks-overview.html
   useEffect(() => {})
