@@ -1,8 +1,10 @@
 const ThemeColor = {
   primary: '#5DD5C8',
   white: '#ffffff',
+  black: '#000000',
   h1: '#333333',
-  h2: '#555555'
+  h2: '#555555',
+  h3: '#777777'
 }
 const theme = {
   Button: {
