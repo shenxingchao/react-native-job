@@ -35,7 +35,7 @@ let getIndexBanner = Mock.mock({
   message: 'success',
   code: 20000,
   data: {
-    url: '@Image("720x180","#f60f60", "#ffffff","720x180")'
+    url: '@Image("720x300","#5DD5C8", "#ffffff","720x300")'
   }
 })
 Mock.mock(/Index\/getIndexBanner/, 'get', () => {

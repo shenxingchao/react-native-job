@@ -4,7 +4,9 @@ const ThemeColor = {
   black: '#000000',
   h1: '#333333',
   h2: '#555555',
-  h3: '#777777'
+  h3: '#777777',
+  bg: '#fafafa',
+  bg_deep: '#eeeeee'
 }
 const theme = {
   Button: {
