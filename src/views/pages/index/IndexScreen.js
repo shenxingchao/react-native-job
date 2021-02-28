@@ -24,6 +24,8 @@ import AutoHeightImage from '../../components/AutoHeightImage'
 import { theme, ThemeColor } from '../../../styles/theme'
 //导入API请求
 import { getIndexBanner } from '../../../api/index/index'
+//导入获取所在省市区
+import getAddress from '../../../utils/getAddress'
 
 //定义一个首页
 export default IndexScreen = ({ navigation, route, props }) => {
@@ -32,18 +34,28 @@ export default IndexScreen = ({ navigation, route, props }) => {
   //定义页面属性
   const [data, setData] = useState({
     banner: null, //头部banner
+    province: '',
+    city: '全部',
     keyword: '' //搜索关键词
   })
 
   //相当于 componentDidMount
   useEffect(() => {
     const getInfo = async () => {
-      //获取首页顶部banner图
       try {
-        const res = await getIndexBanner({}) // 复制json值console.log(JSON.stringify(res))
+        //获取首页顶部banner图
+        const banner = await getIndexBanner({}) // 复制json值console.log(JSON.stringify(res))
+        //获取定位
+        const address = await getAddress()
+        const { province, city } = address.data.result.addressComponent
 
         //下面就可以批量设置了
-        setData({ ...data, banner: res.data.url })
+        setData({
+          ...data,
+          banner: banner.data.url,
+          province: province,
+          city: city
+        })
       } catch (err) {}
     }
     getInfo()
@@ -79,8 +91,8 @@ export default IndexScreen = ({ navigation, route, props }) => {
                 style={{
                   position: 'absolute',
                   bottom: 10,
+                  flexDirection: 'row',
                   width: '100%',
-                  display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}
@@ -98,21 +110,16 @@ export default IndexScreen = ({ navigation, route, props }) => {
                     backgroundColor: ThemeColor.white,
                     borderRadius: 50,
                     color: ThemeColor.h1,
-                    paddingRight: '20%'
+                    paddingRight: '20%',
+                    paddingLeft: '20%'
+                  }}
+                  inputStyle={{
+                    fontSize: 16
                   }}
                   leftIconContainerStyle={{
                     width: '20%'
                   }}
-                  searchIcon={() => (
-                    <Text
-                      style={{ fontSize: 16 }}
-                      onPress={() => {
-                        alert(333)
-                      }}
-                    >
-                      全国
-                    </Text>
-                  )}
+                  searchIcon={null}
                   round={true}
                   placeholder="搜索职位/公司"
                   value={data.keyword}
@@ -120,6 +127,23 @@ export default IndexScreen = ({ navigation, route, props }) => {
                     setData({ ...data, keyword: value })
                   }}
                 />
+                <TouchableHighlight
+                  activeOpacity={0.95}
+                  underlayColor={ThemeColor.bg_deep}
+                  onPress={() => alert('选中')}
+                  style={{
+                    width: '20%',
+                    height: '100%',
+                    position: 'absolute',
+                    left: '5%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderTopLeftRadius: 50,
+                    borderBottomLeftRadius: 50
+                  }}
+                >
+                  <Text>{data.city}</Text>
+                </TouchableHighlight>
                 <TouchableHighlight
                   activeOpacity={0.95}
                   underlayColor={ThemeColor.bg_deep}
@@ -209,8 +233,8 @@ export default IndexScreen = ({ navigation, route, props }) => {
                 />
               </View>
             )}
+            <Text style={{ height: 500 }}>推荐列表1</Text>
             <Text style={{ height: 500 }}>推荐列表2</Text>
-            <Text style={{ height: 500 }}>推荐列表3</Text>
           </HScrollView>
           <HScrollView
             index={1}
