@@ -30,12 +30,12 @@ import getAddress from '../../../utils/getAddress'
 //定义一个首页
 export default IndexScreen = ({ navigation, route, props }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [showActivityIndicator, setShowActivityIndicator] = useState(false)
+
   //定义页面属性
   const [data, setData] = useState({
     banner: null, //头部banner
-    province: '',
-    city: '全部',
+    province: '', //身份
+    city: '全部', //城市
     keyword: '' //搜索关键词
   })
 
@@ -203,36 +203,18 @@ export default IndexScreen = ({ navigation, route, props }) => {
             }}
             //标签页下拉刷新
             isRefreshing={isRefreshing}
+            renderRefreshControl={() => (
+              <ActivityIndicator size="large" color={ThemeColor.primary} />
+            )}
             onStartRefresh={() => {
               // console.log('开始刷新')
               setIsRefreshing(true)
-              setShowActivityIndicator(true)
               setTimeout(() => {
                 // console.log('刷新结束')
                 setIsRefreshing(false)
-                setShowActivityIndicator(false)
               }, 1500)
             }}
           >
-            {showActivityIndicator && (
-              <View
-                style={{
-                  position: 'relative',
-                  justifyContent: 'center'
-                }}
-              >
-                <ActivityIndicator
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0
-                  }}
-                  size="large"
-                  color={ThemeColor.primary}
-                />
-              </View>
-            )}
             <Text style={{ height: 500 }}>推荐列表1</Text>
             <Text style={{ height: 500 }}>推荐列表2</Text>
           </HScrollView>
