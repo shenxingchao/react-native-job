@@ -34,7 +34,7 @@ export default IndexScreen = ({ navigation, route, props }) => {
   //定义页面属性
   const [data, setData] = useState({
     banner: null, //头部banner
-    province: '', //身份
+    province: '', //省份
     city: '全部', //城市
     keyword: '' //搜索关键词
   })
