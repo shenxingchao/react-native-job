@@ -23,7 +23,6 @@ let getLocation = () => {
 //百度地图根据经纬度  你地址解析接口 #http://lbs.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
 let getMapdata = (latitude, longitude) => {
   return new Promise((resolve, reject) => {
-    console.log(BaiduMap_URL + latitude + ',' + longitude)
     axios({
       url: BaiduMap_URL + latitude + ',' + longitude,
       method: 'get'
