@@ -41,3 +41,17 @@ let getIndexBanner = Mock.mock({
 Mock.mock(/Index\/getIndexBanner/, 'get', () => {
   return getIndexBanner
 })
+
+//获取首页顶部banner图
+let getIndexList = Mock.mock({
+  message: 'success',
+  code: 20000,
+  data: {
+    'id|+1': 1,
+    title: '@ctitle(10)',
+    image: '@Image("400x400","#5DD5C8", "#ffffff","400x400")'
+  }
+})
+Mock.mock(/Index\/getIndexList/, 'get', () => {
+  return getIndexList
+})

@@ -23,7 +23,7 @@ import AutoHeightImage from '../../components/AutoHeightImage'
 //导入主题
 import { theme, ThemeColor } from '../../../styles/theme'
 //导入API请求
-import { getIndexBanner } from '../../../api/index/index'
+import { getIndexBanner, getIndexList } from '../../../api/index/index'
 //导入获取所在省市区
 import getAddress from '../../../utils/getAddress'
 
@@ -36,25 +36,38 @@ export default IndexScreen = ({ navigation, route, props }) => {
     banner: null, //头部banner
     province: '', //省份
     city: '全部', //城市
-    keyword: '' //搜索关键词
+    keyword: '', //搜索关键词
+    page: 1, //当前页
+    page_size: 10, //每页数量
+    type: 1, //1推荐 2最新 3热门
+    list: [] //列表数据
   })
 
   //相当于 componentDidMount
   useEffect(() => {
     const getInfo = async () => {
       try {
-        //获取首页顶部banner图
-        const banner = await getIndexBanner({}) // 复制json值console.log(JSON.stringify(res))
         //获取定位
         const address = await getAddress()
         const { province, city } = address.data.result.addressComponent
+        //获取首页顶部banner图
+        const banner = await getIndexBanner({}) // 复制json值console.log(JSON.stringify(res))
+        //获取首页招聘列表
+        const list = await getIndexList({
+          page: page,
+          page_size: page_size,
+          type: 1,
+          keyword: ''
+        })
+        console.log(list)
 
         //下面就可以批量设置了
         setData({
           ...data,
           banner: banner.data.url,
           province: province,
-          city: city
+          city: city,
+          list: list.data
         })
       } catch (err) {}
     }

@@ -8,3 +8,12 @@ export function getIndexBanner(params) {
     params: params
   })
 }
+
+//获取首页招聘列表
+export function getIndexList(params) {
+  return request({
+    url: '/Index/getIndexList',
+    method: 'get',
+    params: params
+  })
+}
