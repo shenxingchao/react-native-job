@@ -45,6 +45,7 @@ if (GlobalConfig.debug) {
   // response interceptor
   service.interceptors.response.use(
     response => {
+      // console.log(response) // for debug
       const res = response.data
       if (res.code !== 20000) {
         // ToastAndroid.show(res.message || 'Error', 5 * 1000)

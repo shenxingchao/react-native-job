@@ -14,6 +14,8 @@ export default AutoHeightImage = props => {
   const [autoHeight, setAutoHeight] = useState(0)
   const { source, style, resizeMode } = props
 
+  let base_width = style.width ? style.width : SCREEN_WIDTH //图片宽度 不能设百分比 设像素点
+
   useEffect(() => {
     if (source.uri) {
       if (source.uri == '')
@@ -24,14 +26,14 @@ export default AutoHeightImage = props => {
         )
       //如果是远程图片，则获取
       Image.getSize(source.uri, (width, height) => {
-        let h = Math.floor((SCREEN_WIDTH / width) * height)
+        let h = Math.floor((base_width / width) * height)
         setAutoHeight(h)
       })
     } else {
       const result = Image.resolveAssetSource(props.source)
       let height = result.height
       let width = result.width
-      let h = Math.floor((SCREEN_WIDTH / width) * height)
+      let h = Math.floor((base_width / width) * height)
       setAutoHeight(h)
     }
   }, [])
@@ -40,7 +42,7 @@ export default AutoHeightImage = props => {
     <Image
       style={[
         {
-          width: SCREEN_WIDTH,
+          width: base_width,
           height: autoHeight //自动高度组件参考 https://www.jianshu.com/p/634b60de3460
         },
         { ...style } //后面的覆盖前面的样式

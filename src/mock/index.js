@@ -46,11 +46,17 @@ Mock.mock(/Index\/getIndexBanner/, 'get', () => {
 let getIndexList = Mock.mock({
   message: 'success',
   code: 20000,
-  data: {
-    'id|+1': 1,
-    title: '@ctitle(10)',
-    image: '@Image("400x400","#5DD5C8", "#ffffff","400x400")'
-  }
+  'data|10': [
+    {
+      'id|+1': 1,
+      job_name: '高级RN开发工程师',
+      image: '@Image("400x400","#5DD5C8", "#ffffff","400x400")',
+      address: '@county(true)',
+      update_time: '2021-03-03 00:00:00',
+      'money|2000-20000': 2000,
+      'year|1-5': 1
+    }
+  ]
 })
 Mock.mock(/Index\/getIndexList/, 'get', () => {
   return getIndexList
