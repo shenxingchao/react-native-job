@@ -9,6 +9,7 @@ import {
   StatusBar,
   ScrollView,
   FlatList,
+  SectionList,
   ActivityIndicator,
   TouchableHighlight,
   StyleSheet
@@ -17,7 +18,9 @@ import SafeAreaView from 'react-native-safe-area-view'
 //导入吸顶导航嵌套滚动
 import { HPageViewHoc } from 'react-native-head-tab-view'
 import { CollapsibleHeaderTabView } from 'react-native-scrollable-tab-view-collapsible-header' //修改SlideTabView import  createHeaderTabsComponent  from './createHeaderTabsComponent'
-const HScrollView = HPageViewHoc(FlatList)
+const HScrollView = HPageViewHoc(ScrollView) //自定义内容滚动列表
+const FScrollView = HPageViewHoc(FlatList) //滚动列表
+const SScrollView = HPageViewHoc(SectionList) //有标题的滚动列表
 //导入UI组件
 import { ThemeProvider, Button, SearchBar } from 'react-native-elements'
 //导入自定义组件
@@ -38,12 +41,32 @@ export default IndexScreen = ({ navigation, route, props }) => {
     banner: null, //头部banner
     province: '', //省份
     city: '全部', //城市
-    keyword: '', //搜索关键词
+    keyword: '' //搜索关键词
+  })
+
+  //定义列表关联属性
+  const [table, setTable] = useState({
     page: 1, //当前页
     page_size: 10, //每页数量
-    type: 1, //1推荐 2最新 3热门
+    type: 0, //0推荐 1最新 2热门
     list: [] //列表数据
   })
+
+  //获取列表
+  const getList = async () => {
+    try {
+      //获取首页招聘列表
+      const list = await getIndexList({
+        page: table.page,
+        page_size: table.page_size,
+        type: table.type
+      })
+      setTable({
+        ...table,
+        list: table.page == 1 ? list.data : table.list.concat(list.data)
+      })
+    } catch (err) {}
+  }
 
   //相当于 componentDidMount
   useEffect(() => {
@@ -54,35 +77,30 @@ export default IndexScreen = ({ navigation, route, props }) => {
         const { province, city } = address.data.result.addressComponent
         //获取首页顶部banner图
         const banner = await getIndexBanner({}) // 复制json值console.log(JSON.stringify(res))
-        //获取首页招聘列表
-        const list = await getIndexList({
-          page: data.page,
-          page_size: data.page_size,
-          type: data.type
-        })
-        // console.log(JSON.stringify(list))
-
         //下面就可以批量设置了
         setData({
           ...data,
           banner: banner.data.url,
           province: province,
-          city: city,
-          list: list.data
+          city: city
         })
       } catch (err) {}
     }
     getInfo()
     SplashScreen.hide()
   }, [])
+
   //componentDidUpdate 可以使用多次 并且可以订阅 #https://zh-hans.reactjs.org/docs/hooks-overview.html
-  useEffect(() => {})
+  useEffect(() => {
+    // console.log(table.page, table.type)
+    getList()
+  }, [table.page, table.type])
 
   return (
     <SafeAreaView style={styles.container}>
       <ThemeProvider theme={theme}>
         <CollapsibleHeaderTabView
-          makeHeaderHeight={() => 200}
+          makeHeaderHeight={() => 250}
           renderScrollHeader={() => (
             <View>
               <StatusBar
@@ -93,9 +111,9 @@ export default IndexScreen = ({ navigation, route, props }) => {
                 translucent={true}
               />
               <AutoHeightImage
-                style={{ height: 200 }} //必须设高度 不然吸顶会失效
+                style={{ height: 250 }} //必须设高度 不然吸顶会失效
                 source={{ uri: data.banner }}
-                resizeMode="contain" //先设contain 再设cover 保证高度和图片差不多都能正好显示
+                resizeMode="cover" //先设contain 再设cover 保证高度和图片差不多都能正好显示
               />
               <View style={styles.searchbar_box}>
                 <SearchBar
@@ -135,6 +153,7 @@ export default IndexScreen = ({ navigation, route, props }) => {
           }}
           initialPage={0} //初始化第一个tab
           tabbarHeight={120} //初始选项卡的高度，如果设置了这个，性能可以得到改善
+          frozeTop={70}
           tabBarPosition="top" //顶部
           locked={false} //锁定拖动 默认否
           tabBarUnderlineStyle={{
@@ -146,8 +165,12 @@ export default IndexScreen = ({ navigation, route, props }) => {
           onScroll={position => {
             // console.log('滑动时的位置：' + position)
           }}
-          onChangeTab={(key, ref) => {
-            // console.log(key)//在这里处理点击显示哪个tab key 就是tabitem的key
+          onChangeTab={item => {
+            setTable({
+              ...table,
+              page: 1,
+              type: item.i
+            })
           }}
           //整个页面下拉刷新
           // isRefreshing={isRefreshing}
@@ -159,9 +182,12 @@ export default IndexScreen = ({ navigation, route, props }) => {
           //     setIsRefreshing(false)
           //   }, 2000)
           // }}
+
+          //是否显示指示器高度
+          makeRoomInRefreshing={false}
         >
           {/* 选项卡标签 */}
-          <HScrollView
+          <FScrollView
             index={0}
             tabLabel="推荐"
             style={{
@@ -174,14 +200,27 @@ export default IndexScreen = ({ navigation, route, props }) => {
             )}
             onStartRefresh={() => {
               // console.log('开始刷新')
+              setTable({
+                ...table,
+                page: 1
+              })
               setIsRefreshing(true)
               setTimeout(() => {
                 // console.log('刷新结束')
                 setIsRefreshing(false)
               }, 1500)
             }}
-            data={data.list}
-            keyExtractor={item => item.id.toString()}
+            onEndReached={() => {
+              setTable({
+                ...table,
+                page: table.page + 1
+              })
+              // console.log('到底了' + data.page)
+            }}
+            onEndReachedThreshold={0.1} //距离底部还剩多少触发onEndReached，这是一个比值0 ~ 1
+            data={table.list}
+            keyExtractor={(item, index) => index.toString()}
+            // keyExtractor={item => item.id.toString()}
             renderItem={({ item }) => (
               <View style={styles.item_container}>
                 <AutoHeightImage
@@ -208,8 +247,8 @@ export default IndexScreen = ({ navigation, route, props }) => {
                 </View>
               </View>
             )}
-          ></HScrollView>
-          <HScrollView
+          ></FScrollView>
+          <FScrollView
             index={1}
             tabLabel="最新"
             style={{
@@ -228,8 +267,8 @@ export default IndexScreen = ({ navigation, route, props }) => {
                 setIsRefreshing(false)
               }, 1500)
             }}
-            data={data.list}
-            keyExtractor={item => item.id.toString()}
+            data={table.list}
+            keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <View style={styles.item_container}>
                 <AutoHeightImage
@@ -256,8 +295,11 @@ export default IndexScreen = ({ navigation, route, props }) => {
                 </View>
               </View>
             )}
-          ></HScrollView>
-          <HScrollView
+            // renderSectionHeader={({ section: { item_content_job_name } }) => (
+            //   <Text>{item_content_job_name}</Text>
+            // )}
+          ></FScrollView>
+          <FScrollView
             index={2}
             tabLabel="热门"
             style={{
@@ -276,8 +318,8 @@ export default IndexScreen = ({ navigation, route, props }) => {
                 setIsRefreshing(false)
               }, 1500)
             }}
-            data={data.list}
-            keyExtractor={item => item.id.toString()}
+            data={table.list}
+            keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <View style={styles.item_container}>
                 <AutoHeightImage
@@ -304,7 +346,7 @@ export default IndexScreen = ({ navigation, route, props }) => {
                 </View>
               </View>
             )}
-          ></HScrollView>
+          ></FScrollView>
         </CollapsibleHeaderTabView>
       </ThemeProvider>
     </SafeAreaView>

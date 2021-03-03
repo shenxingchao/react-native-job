@@ -19,19 +19,7 @@ export default MyScreen = ({ navigation, route }) => {
           hidden={false}
           translucent={true}
         />
-        <Text style={{ height: 200 }}>我的1</Text>
-        <Text style={{ height: 200 }}>我的2</Text>
-        <Text style={{ height: 200 }}>我的3</Text>
-        <Text>我的</Text>
-        <Text>我的</Text>
-        <Text>我的</Text>
-        <Text>我的</Text>
-        <Text>我的</Text>
-        <Text>我的</Text>
-        <Text>我的</Text>
-        <Text>我的8</Text>
-        <Text>我的9</Text>
-        <Text>我的10</Text>
+        <Text style={{ height: 200 }}>我的</Text>
       </ScrollView>
     </SafeAreaView>
   )
