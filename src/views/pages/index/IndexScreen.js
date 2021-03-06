@@ -222,30 +222,38 @@ export default IndexScreen = ({ navigation, route, props }) => {
             keyExtractor={(item, index) => index.toString()}
             // keyExtractor={item => item.id.toString()}
             renderItem={({ item }) => (
-              <View style={styles.item_container}>
-                <AutoHeightImage
-                  style={styles.item_image}
-                  source={{ uri: item.image }}
-                  resizeMode="cover" //先设contain 再设cover 保证高度和图片差不多都能正好显示
-                />
-                <View style={styles.item_content_container}>
-                  <Text style={styles.item_content_job_name}>
-                    {item.job_name}
-                  </Text>
-                  <Text style={styles.item_content_address}>
-                    {item.address}
-                  </Text>
-                  <Text style={styles.item_content_text}>
-                    {item.year + '年'}
-                  </Text>
-                  <Text style={styles.item_content_text}>
-                    {item.update_time + '更新'}
-                  </Text>
+              <TouchableHighlight
+                activeOpacity={0.95}
+                underlayColor={ThemeColor.bg_deep}
+                onPress={() =>
+                  navigation.navigate('JobDetailScreen', { id: item.id })
+                }
+              >
+                <View style={styles.item_container}>
+                  <AutoHeightImage
+                    style={styles.item_image}
+                    source={{ uri: item.image }}
+                    resizeMode="cover" //先设contain 再设cover 保证高度和图片差不多都能正好显示
+                  />
+                  <View style={styles.item_content_container}>
+                    <Text style={styles.item_content_job_name}>
+                      {item.job_name}
+                    </Text>
+                    <Text style={styles.item_content_address}>
+                      {item.address}
+                    </Text>
+                    <Text style={styles.item_content_text}>
+                      {item.year + '年'}
+                    </Text>
+                    <Text style={styles.item_content_text}>
+                      {item.update_time + '更新'}
+                    </Text>
+                  </View>
+                  <View style={styles.item_right_container}>
+                    <Text>{'￥' + item.money}</Text>
+                  </View>
                 </View>
-                <View style={styles.item_right_container}>
-                  <Text>{'￥' + item.money}</Text>
-                </View>
-              </View>
+              </TouchableHighlight>
             )}
           ></FScrollView>
           <FScrollView
