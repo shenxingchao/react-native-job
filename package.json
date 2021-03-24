@@ -1,6 +1,6 @@
 {
   "name": "takejob",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -23,7 +23,7 @@
     "axios": "^0.21.1",
     "mockjs": "^1.1.0",
     "react": "17.0.1",
-    "react-native": "0.63.4",
+    "react-native": "0.64.0",
     "react-native-elements": "^3.2.0",
     "react-native-gesture-handler": "^1.10.1",
     "react-native-head-tab-view": "^3.0.2",
@@ -39,13 +39,13 @@
     "react-native-vector-icons": "^8.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.8",
-    "@babel/runtime": "^7.13.8",
+    "@babel/core": "^7.13.10",
+    "@babel/runtime": "^7.13.10",
     "@react-native-community/eslint-config": "^2.0.0",
     "babel-jest": "^26.6.3",
-    "eslint": "^7.21.0",
+    "eslint": "^7.22.0",
     "jest": "^26.6.3",
-    "metro-react-native-babel-preset": "^0.65.1",
+    "metro-react-native-babel-preset": "^0.65.2",
     "patch-package": "^6.4.0",
     "postinstall-postinstall": "^2.1.0",
     "react-test-renderer": "17.0.1"
