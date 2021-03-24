@@ -16,11 +16,13 @@ import {
 } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
 //导入吸顶导航嵌套滚动
-import { HPageViewHoc } from 'react-native-head-tab-view'
+import {
+  HScrollView,
+  HFlatList as FScrollView,
+  HSectionList
+} from 'react-native-head-tab-view'
 import { CollapsibleHeaderTabView } from 'react-native-scrollable-tab-view-collapsible-header' //修改SlideTabView import  createHeaderTabsComponent  from './createHeaderTabsComponent'
-const HScrollView = HPageViewHoc(ScrollView) //自定义内容滚动列表
-const FScrollView = HPageViewHoc(FlatList) //滚动列表
-const SScrollView = HPageViewHoc(SectionList) //有标题的滚动列表
+
 //导入UI组件
 import { ThemeProvider, Button, SearchBar } from 'react-native-elements'
 //导入自定义组件
@@ -100,7 +102,7 @@ export default IndexScreen = ({ navigation, route, props }) => {
     <SafeAreaView style={styles.container}>
       <ThemeProvider theme={theme}>
         <CollapsibleHeaderTabView
-          makeHeaderHeight={() => 250}
+          headerHeight={250}
           renderScrollHeader={() => (
             <View>
               <StatusBar
@@ -200,12 +202,12 @@ export default IndexScreen = ({ navigation, route, props }) => {
             )}
             onStartRefresh={() => {
               // console.log('开始刷新')
-              setTable({
-                ...table,
-                page: 1
-              })
               setIsRefreshing(true)
               setTimeout(() => {
+                setTable({
+                  ...table,
+                  page: 1
+                })
                 // console.log('刷新结束')
                 setIsRefreshing(false)
               }, 1500)
