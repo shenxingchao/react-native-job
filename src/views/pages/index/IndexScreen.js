@@ -18,7 +18,7 @@ import SafeAreaView from 'react-native-safe-area-view'
 //导入吸顶导航嵌套滚动
 import {
   HScrollView,
-  HFlatList as FScrollView,
+  HFlatList,
   HSectionList
 } from 'react-native-head-tab-view'
 import { CollapsibleHeaderTabView } from 'react-native-scrollable-tab-view-collapsible-header' //修改SlideTabView import  createHeaderTabsComponent  from './createHeaderTabsComponent'
@@ -189,7 +189,7 @@ export default IndexScreen = ({ navigation, route, props }) => {
           makeRoomInRefreshing={false}
         >
           {/* 选项卡标签 */}
-          <FScrollView
+          <HFlatList
             index={0}
             tabLabel="推荐"
             style={{
@@ -257,8 +257,8 @@ export default IndexScreen = ({ navigation, route, props }) => {
                 </View>
               </TouchableHighlight>
             )}
-          ></FScrollView>
-          <FScrollView
+          ></HFlatList>
+          <HFlatList
             index={1}
             tabLabel="最新"
             style={{
@@ -308,8 +308,8 @@ export default IndexScreen = ({ navigation, route, props }) => {
             // renderSectionHeader={({ section: { item_content_job_name } }) => (
             //   <Text>{item_content_job_name}</Text>
             // )}
-          ></FScrollView>
-          <FScrollView
+          ></HFlatList>
+          <HFlatList
             index={2}
             tabLabel="热门"
             style={{
@@ -356,7 +356,7 @@ export default IndexScreen = ({ navigation, route, props }) => {
                 </View>
               </View>
             )}
-          ></FScrollView>
+          ></HFlatList>
         </CollapsibleHeaderTabView>
       </ThemeProvider>
     </SafeAreaView>
